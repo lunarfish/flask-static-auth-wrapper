@@ -1,0 +1,1 @@
+# flask-static-auth-wrapper
