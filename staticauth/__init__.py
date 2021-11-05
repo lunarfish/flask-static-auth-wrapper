@@ -95,9 +95,14 @@ def auth_callback():
 
 @app.route("/logout")
 def logout():
+    response = None
     if app.config["auth_mode"] == "flask":
-        response = get_logout_redirect(request.host_url)
-    else:
+        try:
+            response = get_logout_redirect(request.host_url)
+        except KeyError:
+            LOG.debug("No logout route from OIDC provider")
+
+    if not response:
         response = redirect("/")
     if "user_info" in session:
         del session["user_info"]
