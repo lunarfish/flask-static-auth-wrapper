@@ -39,7 +39,7 @@ def bootstrap():
             endpoint=app.config.get("oidc_endpoint"),
             client_id=app.config.get("oidc_client_id"),
             client_secret=app.config.get("oidc_client_secret"),
-            scope=app.config.get("oidic_scopes")
+            scope=app.config.get("oidc_scopes", "openid email profile")
         )
     return app
 
@@ -62,7 +62,7 @@ def handle_auth():
 
 @app.route("/login")
 def login():
-    redirect_to = f"{request.host_url}/oidc-callback"
+    redirect_to = f"{request.host_url}oidc-callback"
     session["login_redirect"] = redirect_to
     auth_url = get_authorization_url(redirect_to)
     LOG.debug(auth_url)
